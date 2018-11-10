@@ -2,6 +2,8 @@ package br.edu.ulbra.election.voter.model;
 
 import javax.persistence.*;
 
+import br.edu.ulbra.election.voter.repository.VoterRepository;
+
 @Entity
 public class Voter {
 
@@ -49,4 +51,17 @@ public class Voter {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public static boolean verificaEmail(String email, VoterRepository voterRepository) {
+
+		Iterable<Voter> list = voterRepository.findAll();
+
+		for (Voter e : list) {
+			if (e.getEmail().equals(email)) {
+				return true;
+			}
+		}
+		return false;
+
+	}
 }
