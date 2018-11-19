@@ -57,7 +57,7 @@ public class Voter {
 		Iterable<Voter> list = voterRepository.findAll();
 
 		for (Voter e : list) {
-			if (e.getEmail().equals(email)) {
+			if (e.getEmail().equalsIgnoreCase(email)) {
 				return true;
 			}
 		}
