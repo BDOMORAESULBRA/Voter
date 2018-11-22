@@ -8,6 +8,7 @@ import br.edu.ulbra.election.voter.model.Voter;
 import br.edu.ulbra.election.voter.output.v1.GenericOutput;
 import br.edu.ulbra.election.voter.output.v1.VoterOutput;
 import br.edu.ulbra.election.voter.repository.VoterRepository;
+import feign.FeignException;
 import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -100,8 +101,14 @@ public class VoterService {
 
 	private void verificaVoto(Long voterId) {
 
-		if (voteClientService.verificaVoter(voterId) == true) {
-			throw new GenericOutputException("Exists votes");
+		try {
+			if (voteClientService.verificaVoter(voterId)) {
+				throw new GenericOutputException("Exists votes!");
+			}
+		} catch (FeignException e) {
+			if (e.status() != 500) {
+				throw new GenericOutputException("Error");
+			}
 		}
 	}
 
